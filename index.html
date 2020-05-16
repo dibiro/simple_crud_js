@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <title>Test api</title>
 </head>
 
@@ -17,18 +19,18 @@
         <input type="submit" value="Crear empleador" />
     </form>
     <table>
-        <thead>
+        <thead class="table">
             <tr>
-                <th>
+                <th scope="col">
                     id
                 </th>
-                <th>
+                <th scope="col">
                     Nombre
                 </th>
-                <th>
+                <th scope="col">
                     Salario
                 </th>
-                <th>
+                <th scope="col">
                     edad
                 </th>
             </tr>
@@ -71,6 +73,7 @@
         }
         employes.push(new_employe)
         render(employes)
+        document.getElementById('form').reset()
     }
 
     function get_employ() {
