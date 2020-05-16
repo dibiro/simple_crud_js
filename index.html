@@ -1,0 +1,110 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test api</title>
+</head>
+
+<body>
+    <form id="form">
+        <label for="name">Nombre</label>
+        <input name="name" id="name" required />
+        <label for="salary">salario</label>
+        <input name="salary" id="salary" required />
+        <label for="age">Edad</label>
+        <input name="age" id="age" type="number" required />
+        <input type="submit" value="Crear empleador" />
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    id
+                </th>
+                <th>
+                    Nombre
+                </th>
+                <th>
+                    Salario
+                </th>
+                <th>
+                    edad
+                </th>
+            </tr>
+        </thead>
+        <tbody id='Data'>
+        </tbody>
+    </table>
+</body>
+<script type="text/javascript">
+    employes = []
+
+    function render(new_employes) {
+        employes = new_employes
+        table = document.getElementById('Data')
+        table.innerHTML = ''
+        employes.map(function (data, index) {
+            tr = document.createElement('tr')
+            employee_id = document.createElement('td')
+            employee_name = document.createElement('td')
+            salary = document.createElement('td')
+            age = document.createElement('td')
+            employee_id.append(data.id)
+            employee_name.append(data.employee_name)
+            salary.append(data.employee_salary)
+            age.append(data.employee_age)
+            tr.append(employee_id)
+            tr.append(employee_name)
+            tr.append(salary)
+            tr.append(age)
+            table.append(tr)
+        })
+    }
+
+    function append_employment(employme) {
+        new_employe = {
+            id: employme.id,
+            employee_name: employme.name,
+            employee_salary: employme.salary,
+            employee_age: employme.age,
+        }
+        employes.push(new_employe)
+        render(employes)
+    }
+
+    function get_employ() {
+        fetch('http://dummy.restapiexample.com/api/v1/employees')
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (myJson) {
+                if (myJson.status === "success") {
+                    render(myJson.data)
+                }
+            });
+    }
+
+    function create_employ(event) {
+        event.preventDefault();
+        data = {
+            name: document.getElementById('name').value,
+            age: document.getElementById('age').value,
+            salary: document.getElementById('salary').value,
+        }
+        fetch("http://dummy.restapiexample.com/api/v1/create", {
+                method: 'POST', // or 'PUT'
+                body: JSON.stringify(data), // data can be `string` or {object}!
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(res => res.json())
+            .catch(error => console.error('Error:', error))
+            .then(response => append_employment(response.data));
+    }
+    get_employ()
+    const form = document.getElementById('form');
+    form.addEventListener('submit', create_employ);
+</script>
+
+</html>
